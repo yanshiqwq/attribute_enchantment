@@ -12,7 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -105,7 +104,7 @@ public class EnchantListener implements Listener {
         boolean addNewAttribute = attachedCount <= 4;
         container.set(key, PersistentDataType.INTEGER, attachedCount + 1);
 
-        ArrayList<Attribute> itemAttributes = null;
+        ArrayList<Attribute> itemAttributes;
         if (itemModifiers != null) {
             itemAttributes = new ArrayList<>(itemModifiers.keys());
         } else {
@@ -190,7 +189,7 @@ public class EnchantListener implements Listener {
         int attachedCount = container.getOrDefault(key, PersistentDataType.INTEGER, 0);
         container.set(key, PersistentDataType.INTEGER, attachedCount + 1);
 
-        AttributeModifier matchingModifier = getMatchingAttributeModifier(random, itemAttributes, itemModifiers, additionModifier.getOperation(), additionAttribute);
+        AttributeModifier matchingModifier = getMatchingAttributeModifier(random, itemAttributes, itemModifiers, additionModifier.getOperation());
         if (matchingModifier != null) {
             itemMeta.removeAttributeModifier(additionAttribute, matchingModifier);
         }
@@ -199,7 +198,7 @@ public class EnchantListener implements Listener {
         item.setItemMeta(itemMeta);
     }
 
-    private static AttributeModifier getMatchingAttributeModifier(Random random, List<Attribute> attributes, Multimap<Attribute, AttributeModifier> modifiers, AttributeModifier.Operation operation, Attribute additionAttribute) {
+    private static AttributeModifier getMatchingAttributeModifier(Random random, List<Attribute> attributes, Multimap<Attribute, AttributeModifier> modifiers, AttributeModifier.Operation operation) {
         if (modifiers == null || modifiers.isEmpty()) {
             return null;
         }
