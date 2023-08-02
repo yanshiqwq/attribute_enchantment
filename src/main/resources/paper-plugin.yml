@@ -1,0 +1,4 @@
+name: enchantment
+version: '${project.version}'
+main: cn.yanshiqwq.enchantment.Main
+api-version: "1.19"
